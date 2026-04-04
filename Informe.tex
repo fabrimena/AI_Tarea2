@@ -7,17 +7,25 @@
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{hyperref}
+% TeX Live ``basic'' a veces no incluye Courier (pcr); usar cmtt para \texttt
+\renewcommand{\ttdefault}{cmtt}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Regresión Lineal Manual: Predicción del Desempeño de Estudiantes}
+\title{Clasificación de calidad de vino tinto mediante regresión logística y PyTorch}
 
-\author{\IEEEauthorblockN{Fabricio Mena Mejia, Anthony Fuentes Calvo y Fernando Sánchez Hidalgo}
-\IEEEauthorblockA{
-Instituto Tecnológico de Costa Rica\\
-Email: fabriciomena11@estudiantec.cr, 2021045930 \\ 
-Fer.sanchez@estudiantec.cr, 2022218688}}
+\author{\IEEEauthorblockN{Fabricio Mena Mejía}
+\IEEEauthorblockA{Instituto Tecnológico de Costa Rica\\
+Email: fabriciomena11@estudiantec.cr}
+\and
+\IEEEauthorblockN{Anthony Fuentes Calvo}
+\IEEEauthorblockA{Instituto Tecnológico de Costa Rica\\
+Email: anthonyfuentescalvo@estudiantec.cr}
+\and
+\IEEEauthorblockN{Fernando Sánchez Hidalgo}
+\IEEEauthorblockA{Instituto Tecnológico de Costa Rica\\
+Email: Fer.sanchez@estudiantec.cr}}
 
 \maketitle
 
@@ -36,7 +44,7 @@ un modelo de regresión logística y evalúe aplicando métricas.
 
 \section{Desarrollo de Regresión Logística con PyTorch}
 
-Para este trabajo se utiliza el conjunto de datos \textit{winequality-red}, que
+Para este trabajo se utiliza el conjunto de datos \textit{winequality-red} del repositorio UCI Machine Learning (también disponible en Kaggle)~\cite{b3}, que
 contiene 1~599 observaciones de vinos tintos descritos por 11 características
 fisicoquímicas numéricas y una variable de calidad sensorial
 \texttt{quality}, con valores enteros entre 3 y 8. El objetivo es construir un
@@ -187,7 +195,7 @@ Analizando la Fig.~\ref{fig:alcohol_vs_quality} podemos ver que a medida que aum
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/volatile_adicity_vs_quality.png}
+    \includegraphics[width=0.9\linewidth]{images/volatile_acidity_vs_quality.png}
     \caption{Diagrama de dispersión de acidez volátil vs calidad.}
     \label{fig:volatile_acidity_vs_quality}
 \end{figure}
@@ -246,7 +254,7 @@ Una vez identificado el mejor experimento en validación, se evalúa el modelo r
     \item AUC $\approx 0.80$.
 \end{itemize}
 
-Comparando estas métricas con las obtenidas en el conjunto de validación para el mismo experimento (accuracy $\approx 0.89$, F1-Score $\approx 0.60$, AUC $\approx 0.88$), se observa una ligera caída de rendimiento al pasar a prueba, especialmente en F1 y AUC. No obstante, las diferencias no son extremas y el comportamiento sigue siendo coherente con las curvas de pérdida, donde no se aprecia un crecimiento sostenido de la pérdida de validación respecto a la de entrenamiento. Para todos los expremientos se utiliza un umbral de decisión del 0.5, pero si se toma en cuenta que las clases están desbalanceadas, sería interesante repetir los experimentos para analizar y comparar los resultados con un umbral de decisión menor (como por ejemplo 0.4 o 0.3).
+Comparando estas métricas con las obtenidas en el conjunto de validación para el mismo experimento (accuracy $\approx 0.89$, F1-Score $\approx 0.60$, AUC $\approx 0.88$), se observa una ligera caída de rendimiento al pasar a prueba, especialmente en F1 y AUC. No obstante, las diferencias no son extremas y el comportamiento sigue siendo coherente con las curvas de pérdida, donde no se aprecia un crecimiento sostenido de la pérdida de validación respecto a la de entrenamiento. Para todos los experimentos se utiliza un umbral de decisión del 0.5, pero si se toma en cuenta que las clases están desbalanceadas, sería interesante repetir los experimentos para analizar y comparar los resultados con un umbral de decisión menor (como por ejemplo 0.4 o 0.3).
 
 Para analizar con mayor detalle los errores del modelo, se genera en la celda 11 la matriz de confusión sobre el conjunto de prueba. La Fig.~\ref{fig:cm} muestra dicha matriz, donde la clase 1 corresponde a vinos de buena calidad y la clase 0 a vinos normales.
 
@@ -268,27 +276,29 @@ La Tabla~\ref{tab:val-metrics} resume las métricas de validación obtenidas en 
 
 \begin{table}[ht]
     \centering
-    \caption{Métricas de validación por experimento de entrenamiento.}
+    \caption{Métricas de validación por experimento de entrenamiento (accuracy, precisión, recall, F1 y AUC).}
     \label{tab:val-metrics}
-    \begin{tabular}{ccccccc}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{ccccccccc}
         \hline
-        Exp. & $lr$ & batch & epochs & Acc & F1 & AUC \\
+        Exp. & $lr$ & batch & ep. & Acc & Prec & Rec & F1 & AUC \\
         \hline
-        1 & 0.0001 & 32  &  50 & 0.83019 & 0.52632 & 0.85397 \\
-        2 & 0.0003 & 32  &  50 & 0.81132 & 0.39394 & 0.78444 \\
-        3 & 0.0010 & 32  &  50 & 0.86321 & 0.40816 & 0.88016 \\
-        4 & 0.0030 & 32  &  50 & 0.86792 & 0.30000 & 0.88204 \\
-        5 & 0.0010 & 64  &  50 & 0.88679 & 0.58621 & 0.87771 \\
-        6 & 0.0030 & 64  &  50 & 0.85849 & 0.37500 & 0.87959 \\
-        7 & 0.0010 & 128 &  50 & 0.79717 & 0.48193 & 0.87564 \\
-        8 & 0.0030 & 128 &  50 & 0.87264 & 0.40000 & 0.87601 \\
-        9 & 0.0010 & 64  & 100 & 0.88208 & 0.57627 & 0.87940 \\
-        10& 0.0030 & 64  & 100 & 0.86792 & 0.30000 & 0.88110 \\
+        1 & 0.0001 & 32  &  50 & 0.83019 & 0.42553 & 0.68966 & 0.52632 & 0.85397 \\
+        2 & 0.0003 & 32  &  50 & 0.81132 & 0.35135 & 0.44828 & 0.39394 & 0.78444 \\
+        3 & 0.0010 & 32  &  50 & 0.86321 & 0.50000 & 0.34483 & 0.40816 & 0.88016 \\
+        4 & 0.0030 & 32  &  50 & 0.86792 & 0.54545 & 0.20690 & 0.30000 & 0.88204 \\
+        5 & 0.0010 & 64  &  50 & 0.88679 & 0.58621 & 0.58621 & 0.58621 & 0.87771 \\
+        6 & 0.0030 & 64  &  50 & 0.85849 & 0.47368 & 0.31034 & 0.37500 & 0.87959 \\
+        7 & 0.0010 & 128 &  50 & 0.79717 & 0.37037 & 0.68966 & 0.48193 & 0.87564 \\
+        8 & 0.0030 & 128 &  50 & 0.87264 & 0.56250 & 0.31034 & 0.40000 & 0.87601 \\
+        9 & 0.0010 & 64  & 100 & 0.88208 & 0.56667 & 0.58621 & 0.57627 & 0.87940 \\
+        10& 0.0030 & 64  & 100 & 0.86792 & 0.54545 & 0.20690 & 0.30000 & 0.88110 \\
         \hline
-    \end{tabular}
+    \end{tabular}%
+    }
 \end{table}
 
-Además, en la Tabla~\ref{tab:best-val-test} se compara el rendimiento del mejor experimento según el F1-Score en validación (configuración 5 con \texttt{lr = 0.001}, \texttt{batch = 64} y \texttt{50 épocas}) frente a las métricas obtenidas al evaluar ese mismo modelo sobre el conjunto de prueba. Los valores de validación corresponden al diccionario \texttt{best\_by\_f1}, mientras que los de prueba proceden de las variables \texttt{test\_accuracy}, \texttt{test\_precision}, \texttt{test\_recall}, \texttt{test\_f1} y \texttt{test\_auc} calculadas en la celda 11. Es importante notar que para este dataset, las clases se encuentran desbalanceadas, esto significa que la métrica del accuracy puede ser afectada por un alto nivel de predicciones en clases negativas, además que se puede identificar que para todos los experiemtnos, el valor de AUC se mantiene siempre por encima de 0.78, tomando variaciones pequeñas entre valores, por lo que se le otorga la mayor relevancia a los valores de F1-score para definir el mejor modelo.
+Además, en la Tabla~\ref{tab:best-val-test} se compara el rendimiento del mejor experimento según el F1-Score en validación (configuración 5 con \texttt{lr = 0.001}, \texttt{batch = 64} y \texttt{50 épocas}) frente a las métricas obtenidas al evaluar ese mismo modelo sobre el conjunto de prueba. Los valores de validación corresponden al diccionario \texttt{best\_by\_f1}, mientras que los de prueba proceden de las variables \texttt{test\_accuracy}, \texttt{test\_precision}, \texttt{test\_recall}, \texttt{test\_f1} y \texttt{test\_auc} calculadas en la celda 11. Es importante notar que para este dataset, las clases se encuentran desbalanceadas, esto significa que la métrica del accuracy puede ser afectada por un alto nivel de predicciones en clases negativas, además que se puede identificar que para todos los experimentos, el valor de AUC se mantiene siempre por encima de 0.78, tomando variaciones pequeñas entre valores, por lo que se le otorga la mayor relevancia a los valores de F1-score para definir el mejor modelo.
 
 \begin{table}[ht]
     \centering
@@ -321,6 +331,8 @@ generalización razonable sobre datos no vistos.
 \bibitem{b1} Bishop, C. M. (2006). \textit{Pattern recognition and machine learning}. Springer.
 
 \bibitem{b2} Hastie, T., Tibshirani, R., \& Friedman, J. (2009). \textit{The elements of statistical learning: data mining, inference, and prediction} (2nd ed.). Springer.
+
+\bibitem{b3} Cortez, P., Cerdeira, A., Almeida, F., Matos, T., \& Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. \textit{Decision Support Systems}, 47(4), 547--553. Dataset UCI: \textit{Wine Quality}.
 
 \end{thebibliography}
 
