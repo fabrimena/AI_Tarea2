@@ -64,7 +64,7 @@ de modo que la clase positiva representa vinos de buena calidad (puntuación 7 u
 8). La distribución resultante es desbalanceada, con aproximadamente un 13.6\,\% de vinos de buena calidad y 86.4\,\% de vinos catalogados como ``normales''. Esta proporción se mantiene en todas las particiones mediante muestreo estratificado.
 
 Antes de ajustar el modelo se realiza un tratamiento de outliers sobre las
-seis características seleccionadas, dado que en los boxplots de sulfatos y de densidad (ver Fig.~\ref{fig:boxplot_sulfate} y Fig.~\ref{fig:boxplot_density}) se observan valores atípicos. En el cuaderno se aplica el criterio del
+seis características seleccionadas ya que algunos boxplots como el de sulfatos y el de la densidad (ver Fig.~\ref{fig:boxplot_sulfate} y Fig.~\ref{fig:boxplot_density} ). En el cuaderno se aplica el criterio del
 \textit{rango intercuartílico} (IQR): para cada variable se calculan el primer
 cuartil $Q_1$ y el tercer cuartil $Q_3$, y se eliminan las observaciones con
 valores fuera del intervalo $[Q_1 - 1.5\,IQR,\, Q_3 + 1.5\,IQR]$, donde
@@ -298,7 +298,7 @@ La Tabla~\ref{tab:val-metrics} resume las métricas de validación obtenidas en 
     }
 \end{table}
 
-Además, en la Tabla~\ref{tab:best-val-test} se compara el rendimiento del mejor experimento según el F1-Score en validación (configuración 5 con \texttt{lr = 0.001}, \texttt{batch = 64} y \texttt{50 épocas}) frente a las métricas obtenidas al evaluar ese mismo modelo sobre el conjunto de prueba. Los valores de validación corresponden al diccionario \texttt{best\_by\_f1}, mientras que los de prueba proceden de las variables \texttt{test\_accuracy}, \texttt{test\_precision}, \texttt{test\_recall}, \texttt{test\_f1} y \texttt{test\_auc} calculadas en la celda 11. Es importante notar que para este dataset las clases se encuentran desbalanceadas: la métrica de accuracy puede verse inflada por un alto nivel de predicciones en la clase negativa. Además, en todos los experimentos el valor de AUC se mantiene por encima de 0.78, con variaciones pequeñas entre configuraciones, por lo que se otorga mayor relevancia al F1-Score para definir el mejor modelo.
+Además, en la Tabla~\ref{tab:best-val-test} se compara el rendimiento del mejor experimento según el F1-Score en validación (configuración 5 con \texttt{lr = 0.001}, \texttt{batch = 64} y \texttt{50 épocas}) frente a las métricas obtenidas al evaluar ese mismo modelo sobre el conjunto de prueba. Los valores de validación corresponden al diccionario \texttt{best\_by\_f1}, mientras que los de prueba proceden de las variables \texttt{test\_accuracy}, \texttt{test\_precision}, \texttt{test\_recall}, \texttt{test\_f1} y \texttt{test\_auc} calculadas en la celda 11. Es importante notar que para este dataset, las clases se encuentran desbalanceadas, esto significa que la métrica del accuracy puede ser afectada por un alto nivel de predicciones en clases negativas, además que se puede identificar que para todos los experimentos, el valor de AUC se mantiene siempre por encima de 0.78, tomando variaciones pequeñas entre valores, por lo que se le otorga la mayor relevancia a los valores de F1-score para definir el mejor modelo.
 
 \begin{table}[ht]
     \centering
