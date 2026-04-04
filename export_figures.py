@@ -11,6 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import torch
 from sklearn.metrics import (
     ConfusionMatrixDisplay,
@@ -81,9 +82,10 @@ for col in selected_features:
         plt.savefig("images/volatile_acidity_vs_quality.png", dpi=150)
     plt.close()
 
+# Misma celda que Tarea2.ipynb: sns.boxplot(x=...) (boxplot horizontal)
 for col in selected_features:
     plt.figure(figsize=(6, 4))
-    plt.boxplot(df[col], vert=True)
+    sns.boxplot(x=df[col])
     plt.title(f"Boxplot de {col}")
     plt.xlabel(col)
     plt.tight_layout()
