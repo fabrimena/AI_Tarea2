@@ -1,0 +1,9 @@
+# LaTeX auxiliares
+*.aux
+*.log
+*.out
+*.synctex.gz
+missfont.log
+
+# PDF generado localmente (opcional: quitar si desean versionar el PDF)
+# Informe.pdf
