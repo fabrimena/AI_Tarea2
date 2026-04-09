@@ -61,7 +61,7 @@ calidad original,
     \end{cases}
 \end{equation}
 de modo que la clase positiva representa vinos de buena calidad (puntuación 7 u
-8). La distribución resultante es desbalanceada, con aproximadamente un 13.6\,\% de vinos de buena calidad y 86.4\,\% de vinos catalogados como ``normales''. Esta proporción se mantiene en todas las particiones mediante muestreo estratificado.
+8). Esta elección de umbral se basa en la convención estándar para este dataset, donde calidades de 7 o superiores se consideran 'buenas' en ejemplos de la comunidad de machine learning, como se sugiere en plataformas como Kaggle~\cite{b4}. La distribución resultante es desbalanceada, con aproximadamente un 13.6\,\% de vinos de buena calidad y 86.4\,\% de vinos catalogados como ``normales''. Esta proporción se mantiene en todas las particiones mediante muestreo estratificado.
 
 Antes de ajustar el modelo se realiza un tratamiento de outliers sobre las
 seis características seleccionadas ya que algunos boxplots como el de sulfatos y el de la densidad (ver Fig.~\ref{fig:boxplot_sulfate} y Fig.~\ref{fig:boxplot_density} ). En el cuaderno se aplica el criterio del
@@ -195,7 +195,7 @@ Analizando la Fig.~\ref{fig:alcohol_vs_quality} podemos ver que a medida que aum
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/volatile_acidity_vs_quality.png}
+    \includegraphics[width=0.9\linewidth]{images/volatile_adicity_vs_quality}
     \caption{Diagrama de dispersión de acidez volátil vs calidad.}
     \label{fig:volatile_acidity_vs_quality}
 \end{figure}
@@ -333,6 +333,8 @@ generalización razonable sobre datos no vistos.
 \bibitem{b2} Hastie, T., Tibshirani, R., \& Friedman, J. (2009). \textit{The elements of statistical learning: data mining, inference, and prediction} (2nd ed.). Springer.
 
 \bibitem{b3} Cortez, P., Cerdeira, A., Almeida, F., Matos, T., \& Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. \textit{Decision Support Systems}, 47(4), 547--553. Dataset UCI: \textit{Wine Quality}.
+
+\bibitem{b4} Kaggle. (2023). Red Wine Quality Dataset. Available: https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009
 
 \end{thebibliography}
 
